@@ -69,6 +69,23 @@ router.get('/range/:min/:max', function (req, res, next) {
         })
 });
 
+
+//Read ( avec un min/max )
+router.get('/search/:product', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var produit = req.params.product;
+    console.log(produit)
+
+    db.query('select * from VueArticle where articlelibelle LIKE % $1 %')
+        .then(function (data) {
+            res.send(JSON.stringify(data));
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.send({"erreur": "Impossible d'afficher le produit"});
+        })
+});
+
 //Delete
 router.delete('/:id', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
